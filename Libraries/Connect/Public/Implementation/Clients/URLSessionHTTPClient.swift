@@ -50,7 +50,12 @@ open class URLSessionHTTPClient: NSObject, HTTPClientInterface, @unchecked Senda
     ) -> Cancelable {
         assert(!request.isGRPC, "URLSessionHTTPClient does not support gRPC, use NIOHTTPClient")
         var urlRequest = URLRequest(httpRequest: request)
-        urlRequest.assumesHTTP3Capable = true
+        if #available(iOS 14.5, *) {
+            urlRequest.assumesHTTP3Capable = true
+        }
+        if #available(visionOS 1.0, *) {
+            urlRequest.assumesHTTP3Capable = true
+        }
         let task = self.session.dataTask(with: urlRequest) { data, urlResponse, error in
             if let httpURLResponse = urlResponse as? HTTPURLResponse {
                 onResponse(HTTPResponse(
@@ -100,7 +105,12 @@ open class URLSessionHTTPClient: NSObject, HTTPClientInterface, @unchecked Senda
     ) -> RequestCallbacks<Data> {
         assert(!request.isGRPC, "URLSessionHTTPClient does not support gRPC, use NIOHTTPClient")
         var urlRequest = URLRequest(httpRequest: request)
-        urlRequest.assumesHTTP3Capable = true
+        if #available(iOS 14.5, *) {
+            urlRequest.assumesHTTP3Capable = true
+        }
+        if #available(visionOS 1.0, *) {
+            urlRequest.assumesHTTP3Capable = true
+        }
         let urlSessionStream = URLSessionStream(
             request: urlRequest,
             session: self.session,
@@ -232,7 +242,12 @@ private extension URLRequest {
         self.init(url: httpRequest.url)
         self.httpMethod = httpRequest.method.rawValue
         self.httpBody = httpRequest.message
-        self.assumesHTTP3Capable = true
+        if #available(iOS 14.5, *) {
+            self.assumesHTTP3Capable = true
+        }
+        if #available(visionOS 1.0, *) {
+            self.assumesHTTP3Capable = true
+        }
         for (headerName, headerValues) in httpRequest.headers {
             self.setValue(headerValues.joined(separator: ","), forHTTPHeaderField: headerName)
         }
