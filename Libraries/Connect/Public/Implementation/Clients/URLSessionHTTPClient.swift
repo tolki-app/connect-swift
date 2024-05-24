@@ -49,7 +49,7 @@ open class URLSessionHTTPClient: NSObject, HTTPClientInterface, @unchecked Senda
         onResponse: @escaping @Sendable (HTTPResponse) -> Void
     ) -> Cancelable {
         assert(!request.isGRPC, "URLSessionHTTPClient does not support gRPC, use NIOHTTPClient")
-        let urlRequest = URLRequest(httpRequest: request)
+        var urlRequest = URLRequest(httpRequest: request)
         urlRequest.assumesHTTP3Capable = true
         let task = self.session.dataTask(with: urlRequest) { data, urlResponse, error in
             if let httpURLResponse = urlResponse as? HTTPURLResponse {
@@ -99,7 +99,7 @@ open class URLSessionHTTPClient: NSObject, HTTPClientInterface, @unchecked Senda
         request: HTTPRequest<Data?>, responseCallbacks: ResponseCallbacks
     ) -> RequestCallbacks<Data> {
         assert(!request.isGRPC, "URLSessionHTTPClient does not support gRPC, use NIOHTTPClient")
-        let urlRequest = URLRequest(httpRequest: request)
+        var urlRequest = URLRequest(httpRequest: request)
         urlRequest.assumesHTTP3Capable = true
         let urlSessionStream = URLSessionStream(
             request: urlRequest,
