@@ -9,3 +9,4 @@
 DerivedData
 Examples/ElizaCocoaPodsApp/ElizaCocoaPodsApp.xcworkspace
 Pods
+.swiftpm
