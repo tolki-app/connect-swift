@@ -1,0 +1,11 @@
+*.xcscheme
+*.xcsettings
+*.xcuserdatad
+*.xcuserstate
+*.xcworkspacedata
+.build
+.DS_Store
+/.tmp
+DerivedData
+Examples/ElizaCocoaPodsApp/ElizaCocoaPodsApp.xcworkspace
+Pods

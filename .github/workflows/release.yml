@@ -1,0 +1,38 @@
+name: release
+on:
+  push:
+    tags:
+      - "*"
+  workflow_dispatch: {} # support manual runs
+permissions:
+  contents: write
+jobs:
+  release:
+    runs-on: macos-14
+    steps:
+      - uses: actions/checkout@v4
+      - name: Select Xcode version
+        # https://github.com/actions/runner-images/blob/main/images/macos/macos-14-arm64-Readme.md
+        run: sudo xcode-select --switch /Applications/Xcode_15.2.app
+      - uses: bufbuild/buf-setup-action@v1.32.0
+        with:
+          github_token: ${{ github.token }}
+      - name: Build plugins
+        run: make buildplugins
+      - name: Zip artifacts
+        run: |
+          cd ./.tmp/bin
+          mkdir ./artifacts
+          tar -zcvf ./artifacts/protoc-gen-connect-swift.tar.gz ./protoc-gen-connect-swift
+          tar -zcvf ./artifacts/protoc-gen-connect-swift-mocks.tar.gz ./protoc-gen-connect-swift-mocks
+          cd ./artifacts
+          for file in $(find . -maxdepth 1 -type f | sed 's/^\.\///' | sort | uniq); do
+            shasum -a 256 "${file}" >> sha256.txt
+          done
+      - name: Publish release
+        uses: softprops/action-gh-release@v2
+        with:
+          generate_release_notes: true
+          append_body: true
+          files: |
+            ./.tmp/bin/artifacts/*
