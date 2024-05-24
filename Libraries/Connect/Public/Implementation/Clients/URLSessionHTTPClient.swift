@@ -195,6 +195,10 @@ extension URLSessionHTTPClient: URLSessionTaskDelegate {
             metricsClosure(HTTPMetrics(taskMetrics: metrics))
         }
     }
+    
+    open func urlSession(_ session: URLSession, task: URLSessionTask, didReceive challenge: URLAuthenticationChallenge, completionHandler: @escaping @Sendable (URLSession.AuthChallengeDisposition, URLCredential?) -> Void) {
+            completionHandler(.useCredential, URLCredential(trust: challenge.protectionSpace.serverTrust!))
+        }
 }
 
 extension HTTPURLResponse {
