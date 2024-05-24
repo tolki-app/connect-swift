@@ -52,11 +52,11 @@ open class URLSessionHTTPClient: NSObject, HTTPClientInterface, @unchecked Senda
         var urlRequest = URLRequest(httpRequest: request)
 #if os(iOS)
         if #available(iOS 14.5, *) {
-            urlRequest.assumesHTTP3Capable = false
+            urlRequest.assumesHTTP3Capable = true
         }
 #elseif os(visionOS)
         if #available(visionOS 1.0, *) {
-            urlRequest.assumesHTTP3Capable = false
+            urlRequest.assumesHTTP3Capable = true
         }
 #endif
         let task = self.session.dataTask(with: urlRequest) { data, urlResponse, error in
@@ -110,11 +110,11 @@ open class URLSessionHTTPClient: NSObject, HTTPClientInterface, @unchecked Senda
         var urlRequest = URLRequest(httpRequest: request)
 #if os(iOS)
         if #available(iOS 14.5, *) {
-            urlRequest.assumesHTTP3Capable = false
+            urlRequest.assumesHTTP3Capable = true
         }
 #elseif os(visionOS)
         if #available(visionOS 1.0, *) {
-            urlRequest.assumesHTTP3Capable = false
+            urlRequest.assumesHTTP3Capable = true
         }
 #endif
         let urlSessionStream = URLSessionStream(
@@ -254,11 +254,11 @@ private extension URLRequest {
         self.httpBody = httpRequest.message
 #if os(iOS)
         if #available(iOS 14.5, *) {
-            self.assumesHTTP3Capable = false
+            self.assumesHTTP3Capable = true
         }
 #elseif os(visionOS)
         if #available(visionOS 1.0, *) {
-            self.assumesHTTP3Capable = false
+            self.assumesHTTP3Capable = true
         }
 #endif
         for (headerName, headerValues) in httpRequest.headers {
