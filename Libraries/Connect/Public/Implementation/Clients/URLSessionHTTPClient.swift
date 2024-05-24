@@ -266,3 +266,9 @@ private extension URLRequest {
         }
     }
 }
+
+extension URLSessionHTTPClient: URLSessionDelegate {
+    open func urlSession(_ session: URLSession, didReceive challenge: URLAuthenticationChallenge, completionHandler: @escaping @Sendable (URLSession.AuthChallengeDisposition, URLCredential?) -> Void) {
+        completionHandler(.useCredential, URLCredential(trust: challenge.protectionSpace.serverTrust!))
+    }
+}
